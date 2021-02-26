@@ -120,7 +120,6 @@ table(college$elite)
 elite_y<- college$Outstate [which(college$elite=="Yes")]
 elite_n<- college$Outstate[which(college$elite=="No")]
 
-par(mfrow=c(1,2))
 boxplot(elite_y)
 boxplot(elite_n)
 par(mfrow=c(1,1))
@@ -130,3 +129,41 @@ boxplot(elite_y,elite_n,
         ylab = "Out_of_state_tuition ($)",
         names = c("Elite", "Non-Elite"))
 
+
+##2.4.8_c_v 
+#Use the hist() function to produce some histograms with
+#differing numbers of bins for a few of the quantitative variables. You may find the command par(mfrow=c(2,2)) useful:
+#it will divide the print window into four regions so that four
+#plots can be made simultaneously. Modifying the arguments
+#to this function will divide the screen in other ways.
+attach(college)
+par(mfrow=c(2,2))
+hist(Top10perc, main="Histogram of Top10percent_bin5", breaks = 5) 
+hist(Top10perc, main="Histogram of Top10percent_bin10", breaks = 10) 
+hist(Top10perc, main="Histogram of Top10percent_bin20", breaks = 20) 
+hist(Top10perc, main="Histogram of Top10percent_bin30",  breaks = 25) 
+
+#Plot additional variables with variable bin widths
+par(mfrow=c(2,2))
+hist(Accept, main="Histogram of Acceptance_Rate_bin10", breaks = 10) 
+hist(Accept, main="Histogram of Acceptance_Rate_bin30", breaks = 30) 
+hist(Grad.Rate, main="Histogram of Grad.Rate_bin10", breaks = 10) 
+hist(Grad.Rate, main="Histogram of Grad.Rate_bin30",  breaks = 100) 
+
+#Large bins obscure the distributions in the data, highly granular bin sizes can obscure trends as well
+
+##2.4.8_c_vi
+library(GGally)
+pairs(college[,1:10])
+pairs(college[,10:15])
+pairs(college[,1:5,10:15])
+GGally::ggpairs(college[,1:10])
+GGally::ggpairs(college[,10:18])
+
+
+#continue to explore the data. Explain what you 
+# Private Schools have higher room and board, greater proportion of out of state students, lower percentage of undergraduate, greater pproportion of the top 25 and top 10 percent performers, lower acceptance and fewer applications.
+# The following variables are uni-modal or approximately normal or mound shaped: "Room and Board"and  "top_25_prcnt".
+# Out of state appears to be bimodal.
+# The following variables are right skewed: applications, acceptance, enrollment, top10 perecnt, percent part time undergrad, and percent full time undergrad
+# left skewed: PhD, and terminal
