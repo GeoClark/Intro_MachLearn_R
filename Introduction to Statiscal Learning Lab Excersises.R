@@ -162,8 +162,87 @@ GGally::ggpairs(college[,10:18])
 
 
 #continue to explore the data. Explain what you 
-# Private Schools have higher room and board, greater proportion of out of state students, lower percentage of undergraduate, greater pproportion of the top 25 and top 10 percent performers, lower acceptance and fewer applications.
+# Private Schools have higher room and board, greater proportion of out of state students, lower percentage of undergraduate, greater proportion of the top 25 and top 10 percent performers, lower acceptance and fewer applications.
 # The following variables are uni-modal or approximately normal or mound shaped: "Room and Board"and  "top_25_prcnt".
 # Out of state appears to be bimodal.
-# The following variables are right skewed: applications, acceptance, enrollment, top10 perecnt, percent part time undergrad, and percent full time undergrad
-# left skewed: PhD, and terminal
+# The following variables are right skewed: applications, acceptance, enrollment, top10 percent, percent part time undergrad,sf_ratio, personal,  and percent full time undergrad
+# The following variables are left skewed: PhD, and terminal
+
+
+
+#2.4.9. This exercise involves the Auto data set studied in the lab. Make sure
+#that the missing values have been removed from the data.
+
+#data are pre-loaded.  Missing values are removed.
+#(a) Which of the predictors are quantitative, and which are qualitative?
+
+
+#get structure
+str(auto)
+
+# Quantitative: mpg, displacement, horsepower, weight, acceleration and year.
+# Qualitative:  cylinders, origin, and name 
+
+#(b) What is the range of each quantitative predictor? You can answer this using the range() function. range()
+
+auto_quant<-auto %>% 
+  select(mpg, displacement, horsepower, weight, acceleration)
+
+
+# print range of each quantitative variable
+#apply repeats the function on each column, the "2" indicates columns, "1" would indicate rows
+apply(auto_quant, 2, range)
+
+
+#(c) What is the mean and standard deviation of each quantitative predictor?
+auto_mean<-apply(auto_quant, 2, mean) 
+auto_sd<-apply(auto_quant, 2, sd)
+
+#combine data table 
+rbind(auto_mean, auto_sd)
+#(d) Now remove the 10th through 85th observations. What is the range, mean, and standard deviation of each predictor in the subset of the data that remains?
+
+auto_quant_subset <- auto_quant[c(1:9,86:392),]
+auto_range<-apply(auto_quant_subset, 2, range) 
+auto_mean<-apply(auto_quant_subset, 2, mean) 
+auto_sd<-apply(auto_quant_subset, 2, sd)
+
+#print range, means, and standard deviation of auto subset.
+rbind(auto_range, auto_mean, auto_sd)
+
+#remove misc auto df
+rm(auto_quant, auto_quant_subset, auto_range)
+
+#(e) Using the full data set, investigate the predictors graphically,
+#using scatterplots or other tools of your choice. Create some plots
+#highlighting the relationships among the predictors. Comment
+#on your findings.
+
+pairs(auto[1:7],lower.panel=NULL)
+
+# create select histograms
+attach(auto)
+par(mfrow=c(3,3))
+hist(mpg, main="Histogram of mpg", breaks=12) 
+hist(displacement, main="Histogram of displacement") 
+hist(horsepower, main="Histogram of horsepower", breaks=15) 
+hist(weight, main="Histogram of Weight") 
+hist(acceleration, main="Histogram of Acceleration") 
+
+cor(auto[,c(1,3:7)], method = c("pearson", "kendall", "spearman"))
+#findings:
+
+# Negative correlation between mpg and cylinders, displacement, horsepower, and weight.
+#Positive correlation with mpg and year and acceleration time.
+#Distributions are principally mound-shaped or normal.The variables mpg and weight are right skewed.  Horsepower and discplacement appear to be slightly bimodal.
+#
+
+#(f) Suppose that we wish to predict gas mileage (mpg) on the basis
+#of the other variables. Do your plots suggest that any of the
+#other variables might be useful in predicting mpg? Justify your
+#answer.
+# Yes, horsepower, weight and displacement have a strong negative correlation with mpg.
+# Weight has the highest correlation coefficient and is therefore likely the most important feature in a potenetial model
+
+
+
