@@ -244,5 +244,88 @@ cor(auto[,c(1,3:7)], method = c("pearson", "kendall", "spearman"))
 # Yes, horsepower, weight and displacement have a strong negative correlation with mpg.
 # Weight has the highest correlation coefficient and is therefore likely the most important feature in a potenetial model
 
+#2.4.10 This exercise involves the Boston housing data set
+library(MASS)
+
+#read about Boston dataset
+?Boston
+
+##2.4.10_a:  How many rows are in this data set? How many columns? What
+##do the rows and columns represent?
+Boston<-Boston
+#view data
+head(Boston)
+str(Boston)
+
+dim(Boston)
+#506 rows and 14 columns
+#Each row is a suburb or neighborhood of Boston
+
+##2.4.10_b:  Make some pairwise scatterplots of the predictors (columns) in
+##this data set. Describe your findings.
+pairs(Boston[c(1:3, 5:7, 9:14)],lower.panel=NULL)
+cor(Boston[c(1:3, 5:7, 9:14)])
 
 
+
+##2.4.10_c:  Are any of the predictors associated with per capita crime rate?
+##  If so, explain the relationship.
+
+#Crime rate (crim), has a .63 and .58 correlation with  access to radial highways (rad) and  full-value property-tax rate per $10k (tax)  respectively.
+
+
+##2.4.10_d:   Do any of the suburbs of Boston appear to have particularly
+##high crime rates? Tax rates? Pupil-teacher ratios? Comment on
+##the range of each predictor.
+
+
+
+#Get range
+apply(Boston, 2, range)
+#get Summary
+summary(Boston)
+
+# The crime rate (crim), age, zn, indus, dis, rad, black, lstat, and medv has a wide range between the min and max values.
+# The highest crime rate is 88 which seems quite high.
+
+##2.4.10_e:   How many of the suburbs in this data set bound the Charles
+##river?
+
+#
+#count suburbs that are bound by the Charles River
+nrow( dplyr::filter(Boston,chas==1))
+
+##2.4.10_f: What is the median pupil-teacher ratio among the towns in this
+#data set?
+
+Boston_med<-as.data.frame(  apply(Boston, 2, median))
+#get_median pratio
+Boston_med[11,]
+
+
+##2.4.10_g: Which suburb of Boston has lowest median value of owneroccupied homes? What are the values of the other predictors
+#for that suburb, and how do those values compare to the overall
+#ranges for those predictors? Comment on your findings.
+
+medv_min<-filter(Boston, medv==min(medv))
+medv_min
+
+# There are two suburbs tied for lowest medv. Crime rates are high in both as is the lower status of the population and proportion of blacks in town.
+
+
+#2.4.10_h: In this data set, how many of the suburbs average more than
+#seven rooms per dwelling? 
+
+# count number of suburbs with average rooms greater than 7
+nrow(dplyr::filter(Boston, rm>7))
+
+
+# count number of suburbs with average rooms greater than 8
+  Bost8<-dplyr::filter(Boston, rm>8)
+
+nrow(Bost8)
+#Comment on the suburbs that average more than eight rooms
+
+Summary(Bost8)
+
+#Suburbs  with more than 8 rooms have twice the median crime rate of the full data set.
