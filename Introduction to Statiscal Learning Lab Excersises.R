@@ -329,3 +329,13 @@ nrow(Bost8)
 Summary(Bost8)
 
 #Suburbs  with more than 8 rooms have twice the median crime rate of the full data set.
+
+
+
+
+
+
+
+
+# CH3_exercises -----------------------------------------------------------
+# Ch3_exercises
