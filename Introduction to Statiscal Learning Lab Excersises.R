@@ -338,4 +338,63 @@ Summary(Bost8)
 
 
 # CH3_exercises -----------------------------------------------------------
-# Ch3_exercises
+#Lab: Linear Regression
+
+library(MASS)
+library(ISLR)
+
+Boston<-MASS::Boston
+names(Boston)
+
+
+#fit model
+lm.fit<-lm(medv∼lstat , data=Boston)
+
+#summary for model
+summary(lm.fit)
+
+#Get coefficients
+coef(lm.fit)
+
+#get confidence interval
+confint (lm.fit)
+
+#predict for given set of values with confidence interval
+predict (lm.fit ,data.frame(lstat=c(5,10 ,15)),interval ="confidence")
+
+#predict for given set of values with prediction
+predict (lm.fit ,data.frame(lstat=c(5,10 ,15)),
+         interval ="prediction")
+
+#Ranges are significantly larger than the 5-95 thresholds
+#Experimeniting with plots
+attach(Boston)
+plot(lstat ,medv)
+abline(lm.fit)
+abline (lm.fit ,lwd =3)
+plot(lstat ,medv ,col="red")
+abline (lm.fit ,lwd=3,col ="blue")
+
+#change symbols on plots to"+" 
+ plot(lstat ,medv ,pch =20)
+ plot(lstat ,medv ,pch ="+")
+ plot(1:20,1:20,pch =1:20)
+# non linear fit.
+ 
+ 
+ #Diagnostic plots for regression
+ par(mfrow=c(2,2))
+ plot(lm.fit)
+ plot(predict (lm.fit), residuals (lm.fit))
+ plot(predict (lm.fit), rstudent (lm.fit))
+
+ plot(hatvalues (lm.fit))
+ which.max(hatvalues (lm.fit))
+
+
+#Multiple linear regression
+ #
+ #
+ 
+
+
