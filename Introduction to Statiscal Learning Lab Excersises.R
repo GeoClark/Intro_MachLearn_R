@@ -395,6 +395,63 @@ abline (lm.fit ,lwd=3,col ="blue")
 #Multiple linear regression
  #
  #
+ mod<-lm(formula = medv ∼ ., data = Boston)
+ summary(mod)
+
+ library(car)
  
+ #get VIF values
+ vif(mod)
+
+ #refit model, hold out age
+ mod1<- lm(formula=medv∼.-age ,data=Boston )
+summary(mod1)
+
+#non-linear fit of predictors
+lm.fit2=lm(medv∼lstat+I(lstat^2))
+
+summary (lm.fit2)
+
+lm.fit=lm(medv∼lstat)
+
+#compare variance of transformed and non-transformed model
+anova(lm.fit, lm.fit2)
+
+#plot transformed model
+par(mfrow=c(2,2))
+plot(lm.fit2)
+
+#fit polynomial model
+lm.fit5=lm(medv∼poly(lstat ,5))
+summary (lm.fit5)
+
+
+#load car seats data
+
+Carseats<- ISLR::Carseats
+# fit model
+lm.fit=lm(Sales∼.+Income :Advertising +Price:Age ,data=Carseats )
+summary (lm.fit)
+
+#dummy variable specification
+attach(Carseats )
+contrasts (ShelveLoc )
+
+
+# Write Functions
+
+LoadLibraries= function (){
+   library(ISLR)
+   library(MASS)
+   print("The libraries have been loaded .")
+}
+#run function
+LoadLibraries
+LoadLibraries()
+
+
+
+
+
 
 
