@@ -443,6 +443,7 @@ contrasts (ShelveLoc )
 LoadLibraries= function (){
    library(ISLR)
    library(MASS)
+  library(dplyr)
    print("The libraries have been loaded .")
 }
 #run function
@@ -450,8 +451,39 @@ LoadLibraries
 LoadLibraries()
 
 
+#pg.132
+#(a) Use the lm() function to perform a simple linear regression with
+#mpg as the response and horsepower as the predictor. Use the
+#summary() function to print the results. Comment on the output.
+#For example:
 
+#3.8.i
+#Is there a relationship between the predictor and the response?
 
+#load auto data
+auto<-ISLR::Auto
+
+#view data
+glimpse(auto)
+
+#fit model mpg to horsepower
+lm.fit.auto<- lm(mpg~horsepower, auto)
+
+summary(lm.fit.auto)
+
+#3.8.ii. How strong is the relationship between the predictor and the response?
+# Adjusted R squared of .6. Correlation coefficient. THere is a negative correlation with mpg, one additional horsepower results in .15 fewer miles per gallon(mpg)
+  
+#3.8.iii.
+#Is the relationship between the predictor and the response positive or negative?
+#negative
+  
+#3.8.iv.
+#What is the predicted mpg associated with a horsepower of 98? What are the associated 95 % confidence and prediction intervals?
+
+predict(lm.fit.auto,data.frame(horsepower=c(98)),interval ="confidence")
+
+#the prediction is 24.47 mpg for a car with 98 horsepower.  The 95% confidence interval is 23.97 to 24.96.
 
 
 
