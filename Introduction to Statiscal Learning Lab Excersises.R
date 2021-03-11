@@ -471,19 +471,49 @@ lm.fit.auto<- lm(mpg~horsepower, auto)
 
 summary(lm.fit.auto)
 
-#3.8.ii. How strong is the relationship between the predictor and the response?
+#3.8.aii. How strong is the relationship between the predictor and the response?
 # Adjusted R squared of .6. Correlation coefficient. THere is a negative correlation with mpg, one additional horsepower results in .15 fewer miles per gallon(mpg)
   
-#3.8.iii.
+#3.8.aiii.
 #Is the relationship between the predictor and the response positive or negative?
 #negative
   
-#3.8.iv.
+#3.8.a.iv.
 #What is the predicted mpg associated with a horsepower of 98? What are the associated 95 % confidence and prediction intervals?
 
 predict(lm.fit.auto,data.frame(horsepower=c(98)),interval ="confidence")
 
 #the prediction is 24.47 mpg for a car with 98 horsepower.  The 95% confidence interval is 23.97 to 24.96.
+
+#3.8.b
+#Plot the response and the predictor. Use the abline() function
+#to display the least squares regression line
+attach(auto)
+plot(horsepower,mpg)
+abline(lm.fit.auto, lwd=3,col ="red")
+
+#3.8.c
+#Use the plot() function to produce diagnostic plots of the least
+#squares regression fit. Comment on any problems you see with
+#the fit.
+
+#create diagnostic plots
+par(mfrow=c(2,2))
+plot(lm.fit.auto)
+plot(predict (lm.fit.auto), residuals (lm.fit.auto))
+plot(predict (lm.fit.auto), rstudent (lm.fit.auto))
+
+#Relationship has curvature and isn't totally linear,  Residuals and standardized residual show strong bias.  Model has high error at low and high mpg.  Residuals are normally distributed.
+
+#3.9. This question involves the use of multiple linear regression on the Auto data set. 
+
+#
+
+
+
+
+
+
 
 
 
