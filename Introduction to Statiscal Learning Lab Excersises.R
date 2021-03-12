@@ -644,7 +644,7 @@ plot(predict (lm.carseats.sim), rstudent (lm.carseats.sim))
 #this coefficient estimate, and the t-statistic and p-value associated with the null hypothesis H0 : β = 0. Comment on these
 #results. 
  
-lm.test<-lm(y ∼ x+0)
+lm.test <-lm(y∼ x+0)
 #coefficient is 1.99, error of .1065, t=18.73, p=<2e-16.  We reject the null, the difference in x and y is significant.
 
 #(b) Now perform a simple linear regression of x onto y without an
@@ -652,11 +652,229 @@ lm.test<-lm(y ∼ x+0)
 #and the corresponding t-statistic and p-values associated with
 #the null hypothesis H0 : β = 0. Comment on these results.
 
-
-
+lm.test <-lm(x∼ y+0)
+summary(lm.test)
+#coefficient is .39, error of .02, t=18.73, p=<2e-16.  We reject the null, the difference in x and y is significant.
 #(c) What is the relationship between the results obtained in (a) and
 #(b)?
-#  (d) For the regression of Y onto X without an intercept, the tstatistic for H0 : β = 0 takes the form β/ˆ SE(βˆ), where βˆ is
+# the coefficients (and error) for (a) and (b) are different but the t-statistic and p value are the same.
+
+# (d) For the regression of Y onto X without an intercept, the statistic for H0 : β = 0 takes the form β/ˆ SE(βˆ), where βˆ is
 #given by (3.38), and where
 #
+
+#12. This problem involves simple linear regression without an intercept.
+#(a) Recall that the coefficient estimate βˆ for the linear regression of Y onto X without an intercept is given by (3.38).
+#Under what circumstance is the coefficient estimate for the regression of X
+#onto Y the same as the coefficient estimate for the regression of Y onto X?
+#When the sum of the squares of the observed y-values are equal to the sum of the squares of the observed x-values.
+
+#  (b) Generate an example in R with n = 100 observations in which
+#the coefficient estimate for the regression of X onto Y is different
+set.seed(1)
+x=rnorm(100)
+y=2*x+rnorm (100)
+lm.simy<-lm(y~x+0)
+lm.simx<-lm(x~y+0)
+
+#different coefficients
+summary(lm.simy)
+summary(lm.simx)
+
+
+
+#from the coefficient estimate for the regression of Y onto X.
+#(c) Generate an example in R with n = 100 observations in which
+#the coefficient estimate for the regression of X onto Y is the
+#same as the coefficient estimate for the regression of Y onto X.
+
+#same coefficients
+set.seed(1)
+x <- rnorm(100)
+y <- -sample(x, 100)
+sum(x)^2
+sum(y)^2
+lm.simy<-lm(y~x+0)
+lm.simx<-lm(x~y+0)
+
+
+#13. In this exercise you will create some simulated data and will fit simple
+#linear regression models to it. Make sure to use set.seed(1) prior to
+#starting part (a) to ensure consistent results.
+#(a) Using the rnorm() function, create a vector, x, containing 100
+#observations drawn from a N(0, 1) distribution. This represents
+#a feature, X.
+
+set.seed(1)
+x = rnorm(100, mean=1.000, sd=1)
+
+#(b) Using the rnorm() function, create a vector, eps, containing 100
+#observations drawn from a N(0, 0.25) distribution i.e. a normal
+#distribution with mean zero and variance 0.25.
+set.seed(1)
+eps=rnorm(100, mean=0.000, sd=.25)
+
+
+
+#(c) Using x and eps, generate a vector y according to the model
+#Y = −1+0.5X + eps
+
+y=-1+.5*x + eps
+
+#What is the length of the vector y? What are the values of β0
+#and β1 in this linear model?
+length(y)
+#100. β0=-1, β1=.5
+
+#  3.7 Exercises 125
+#(d) Create a scatterplot displaying the relationship between x and
+#y. Comment on what you observe.
+par(mfrow=c(1,1))
+plot(x,y)
+
+#plot is as expected where x and y have a strong linear relationship.
+
+#(e) Fit a least squares linear model to predict y using x. Comment
+#on the model obtained. How do βˆ0 and βˆ1 compare to β0 and
+#β1?
+lm.fit<-lm(y~x)
+summary(lm.fit)
+
+#THe model coefficients and answer from (c) are nearly equal.  
+
+#  (f) Display the least squares line on the scatterplot obtained in (d).
+#Draw the population regression line on the plot, in a different
+#color. Use the legend() command to create an appropriate legend.
+plot(x,y)
+abline(lm.fit, lwd=3, col="blue")
+abline(-1, 0.5, lwd=3, col="red")
+legend("topleft", legend = c("model fit", "pop. regression"), col=c("blue", "red"), lwd=3)
+
+#(g) Now fit a polynomial regression model that predicts y using x
+#and x2. Is there evidence that the quadratic term improves the
+#model fit? Explain your answer.
+
+lm.fit_poly=lm(y∼x+I(x^2))
+
+summary(lm.fit_poly)
+#The r2 values are roughly equivalent between the two models although the "x2" term is not significant.
+# THe f statistic increase indicating a reduced goodness of fit.
+
+
+
+#(h) Repeat (a)–(f) after modifying the data generation process in
+#such a way that there is less noise in the data. The model (3.39)
+#should remain the same. You can do this by decreasing the variance of the normal distribution used to generate the error term
+#in (b). Describe your results.
+
+set.seed(1)
+x = rnorm(100, mean=1.000, sd=.1)
+
+set.seed(1)
+eps=rnorm(100, mean=0.000, sd=.1)
+y=-1+.5*x + eps
+lm.fit.lv<-lm(y~x)
+#model error (mse) is reduced substantially. Confidence intervals tighten
+
+
+#(i) Repeat (a)–(f) after modifying the data generation process in
+#such a way that there is more noise in the data. The model
+#(3.39) should remain the same. You can do this by increasing
+#the variance of the normal distribution used to generate the
+#error term  in (b). Describe your results.
+
+#model error (mse) is increase substantially. Confidence intervals widen
+
+x = rnorm(100, mean=1.000, sd=.5)
+
+set.seed(1)
+eps=rnorm(100, mean=0.000, sd=3)
+y=-1+.5*x + eps
+lm.fit.hv<-lm(y~x)
+
+
+
+#(j) What are the confidence intervals for β0 and β1 based on the
+#original data set, the noisier data set, and the less noisy data
+#set? Comment on your results.#
+
+confint(lm.fit)
+confint(lm.fit.lv)
+confint(lm.fit.hv)
+
+#Noise influences the confidence intervals.  The greater the noise the larger the confidence intervals.  
+
+
+#Question 14
+#This problem focuses on the collinearity problem.
+
+#(a) Perform the following commands in R:
+set.seed(1)
+ x1=runif (100)
+ x2=0.5*x1+rnorm (100)/10
+ y=2+2*x1+0.3*x2+rnorm (100)
+ 
+ 
+#The last line corresponds to creating a linear model in which y is
+#a function of x1 and x2. Write out the form of the linear model.
+#What are the regression coefficients?
+ # β0=2,β1=2,β3=0.3
+ 
+ 
+#  (b) What is the correlation between x1 and x2? Create a scatterplot
+#displaying the relationship between the variables.
+ 
+ plot(x1,x2)
+ cor(x1,x2)
+ #.835 correlation
+ 
+#(c) Using this data, fit a least squares regression to predict y using
+#x1 and x2. Describe the results obtained. What are βˆ0, βˆ1, and
+#βˆ2? 
+# βˆ0=2.47
+# βˆ1=1.33
+# βˆ2 =.22#model has a weak fit, the p value for x1 is just below the alpha of .05 indicating weak statistical evidence of significance.
+ 
+ #How do these relate to the true β0, β1, and β2? 
+ #the predicted values are not very close the the "actuals"
+ #Can you reject the null hypothesis H0 : β1 = 0? 
+ # yes
+ #How about the null hypothesis H0 : β2 = 0?
+ 
+lm.fit<-lm(y~x1+x2)
+summary(lm.fit)
+
+
+# The regression coefficients are approximately equal to the true coefficients. We can reject the null hypothesis for β1 because its p-value is below 5%, although just barely.. 
+# We cannot reject the null hypothesis for β2 because its p-value large.
+
+
+#(d) Now fit a least squares regression to predict y using only x1.
+#Comment on your results. Can you reject the null hypothesis
+#H0 : β1 = 0?
+
+lm.fit<-lm(y~x1)
+summary(lm.fit)
+
+# Yes, the model has a weak fit but the p value is very small so we can reject the null.
+
+#(e) Now fit a least squares regression to predict y using only x2.
+#Comment on your results. Can you reject the null hypothesis
+#H0 : β1 = 0?
+
+lm.fit1<-lm(y~x2)
+summary(lm.fit1)
+
+#Yes, the p value is small we can reject H0
+
+#(f) Do the results obtained in (c)–(e) contradict each other? Explain
+#your answer.
+
+#No, with the two variables in one model the relationship between y and x2 was not significant because they have colinearity.  When included in the same regression the effect was difficult to divide appropriately. 
+#(g) Now suppose we obtain one additional observation, which was unfortunately mismeasured.
+#
+
+
+
+
 
