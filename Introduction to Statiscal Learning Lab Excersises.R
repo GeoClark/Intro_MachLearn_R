@@ -568,6 +568,95 @@ plot(mpg, predict(lm.fit.auto.int))
 #(f) Try a few different transformations of the variables, such as log(X), √
 #X, X2. Comment on your findings.
 
+#lm.fit.auto.x2=lm(medv∼lstat+I(lstat^2))
+lm.fit.auto.x2 <- lm(mpg~displacement+weight+year+ cylinders+weight*displacement+I(weight^2), auto)
+lm.fit.auto.x2 <- lm(mpg~displacement+weight+year+ cylinders+I(displacement^2), auto)
+
+#plot ac vs predicted. tighter fit using the transformed displacement variable, not weight
+plot(mpg, predict(lm.fit.auto.x2))
+
+lm.fit.auto.log <- lm(mpg~displacement+weight+year+ cylinders+I(log(displacement)), auto)
+plot(mpg, predict(lm.fit.auto.log))
+
+lm.fit.auto.sqrt <- lm(mpg~displacement+weight+year+ cylinders+I(sqrt(displacement)), auto)
+plot(mpg, predict(lm.fit.auto.sqrt))
+
+#each transformation improved the fit and tightness of the residuals.  SOmetimes the transformed variable made the original varibale not significant.
 
 
+##3.10. This question should be answered using the Carseats data set.
+carseats<-ISLR::Carseats
+#get data dictionary
+?Carseats
+
+str(carseats)
+#(a) Fit a multiple regression model to predict Sales using Price,Urban, and US.
+
+lm.carseats<- lm(Sales~ Price+Urban+US, data=carseats)
+
+#model summary
+summary(lm.carseats)
+
+#(b) Provide an interpretation of each coefficient in the model. Be careful—some of the variables in the model are qualitative!
+#  an increase in price by $1 results in $50 less in Sales at a given location
+#  Sales dont change at a given location if it is urban vs suburban.  This feature isn't statistically significant.
+#  Sales in US increase the sales $1200 at a given location.
+
+
+#(c) Write out the model in equation form, being careful to handle the qualitative variables properly.
+
+# Sales  =  (-.05 * Price)  +  ( -.02*UrbanYes)  +  (  1.2* USyes)+13.04
+
+#(d) For which of the predictors can you reject the null hypothesis#H0 : βj = 0?
+# The p-values are sufficiently small for Price and UsYes to reject the null hypothesis.
+
+#(e) On the basis of your response to the previous question, fit a smaller model that only uses the predictors for which there is evidence of association with the outcome.
+lm.carseats.sim<- lm(Sales~ Price+US, data=carseats)
+
+#(f) How well do the models in (a) and (e) fit the data?
+par(mfrow=c(1,2))
+plot(carseats$Sales, predict(lm.carseats))
+plot(carseats$Sales, predict(lm.carseats.sim))
+
+# the models both have significant F-statistics.  THe simplified model has a higher F value and therefore a stronger fit.  In the predicted vs actual the fits look very similar and not particularly strong.
+
+
+#(g) Using the model from (e), obtain 95 % confidence intervals for the coefficient(s).
+
+confint(lm.carseats.sim, level=0.95)
+
+#(h) Is there evidence of outliers or high leverage observations in the
+#model from (e)?
+par(mfrow=c(2,3))
+plot(lm.carseats.sim)
+plot(predict (lm.carseats.sim), residuals (lm.carseats.sim))
+plot(predict (lm.carseats.sim), rstudent (lm.carseats.sim))
+
+# No, the model does not appear to have any high-leverage observations.
+
+
+#11. In this problem we will investigate the t-statistic for the null hypothesis H0 : β = 0 in simple linear regression without an intercept. To
+#begin, we generate a predictor x and a response y as follows.
+ set.seed(1)
+ x=rnorm(100)
+ y=2*x+rnorm (100)
+#(a) Perform a simple linear regression of y onto x, without an intercept. Report the coefficient estimate βˆ, the standard error of
+#this coefficient estimate, and the t-statistic and p-value associated with the null hypothesis H0 : β = 0. Comment on these
+#results. 
+ 
+lm.test<-lm(y ∼ x+0)
+#coefficient is 1.99, error of .1065, t=18.73, p=<2e-16.  We reject the null, the difference in x and y is significant.
+
+#(b) Now perform a simple linear regression of x onto y without an
+#intercept, and report the coefficient estimate, its standard error,
+#and the corresponding t-statistic and p-values associated with
+#the null hypothesis H0 : β = 0. Comment on these results.
+
+
+
+#(c) What is the relationship between the results obtained in (a) and
+#(b)?
+#  (d) For the regression of Y onto X without an intercept, the tstatistic for H0 : β = 0 takes the form β/ˆ SE(βˆ), where βˆ is
+#given by (3.38), and where
+#
 
