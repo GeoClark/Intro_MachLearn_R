@@ -507,12 +507,66 @@ plot(predict (lm.fit.auto), rstudent (lm.fit.auto))
 
 #3.9. This question involves the use of multiple linear regression on the Auto data set. 
 
-#
+#a)Produce a scatterplot matrix which includes all of the variables in the data set.
+
+auto<- ISLR::Auto
+pairs(auto)
+
+#(b) Compute the matrix of correlations between the variables using the function cor(). You will need to exclude the name variable, cor() which is qualitative.
+cor(auto[,c(1:8)], method = c("pearson"))
+
+#(c) Use the lm() function to perform a multiple linear regression with mpg as the response and all other variables except name as the predictors.
+#Use the summary() function to print the results.
 
 
+lm.fit.auto<- lm(mpg~cylinders+ displacement+horsepower+weight+acceleration+year+origin, auto)
+summary(lm.fit.auto)
+
+#Comment on the output. For instance:
+#  i. Is there a relationship between the predictors and the response?
+# Yes, the model has a high F-statistic with high p-value indicating a good fit.
+
+#  ii. Which predictors appear to have a statistically significant relationship to the response?
+#displacement, weight, year, and origin appear statistically significant with very small p-values.
+
+#  iii. What does the coefficient for the year variable suggest?
+# The coefficient for "year" of .75 suggests for each additional year the mpg goes up .75.
+
+#  (d) Use the plot() function to produce diagnostic plots of the linear regression fit. 
+#Comment on any problems you see with the fit. 
+#Do the residual plots suggest any unusually large outliers? Does
+#the leverage plot identify any observations with unusually high leverage?
+
+#create diagnostic plots
+par(mfrow=c(3,2))
+plot(lm.fit.auto)
+plot(predict (lm.fit.auto), residuals (lm.fit.auto))
+plot(predict (lm.fit.auto), rstudent (lm.fit.auto))
+
+# the residuals are not evenly distributed across all x values, instead there is curvature where residuals are high from 0:10 and 30:35. 
+#Residuals are mostly normally distributed except in the high positive quantiles.  The model does appear to have several outliers with high leverage.
+
+#  (e) Use the * and : symbols to fit linear regression models with interaction effects. Do any interactions appear to be statistically significant?
+attach(auto)
+auto$cylinders=as.factor(cylinders)
+lm.fit.auto.int<- lm(mpg~displacement+weight+year+ cylinders+weight*displacement, auto)
+
+summary(lm.fit.auto.int)
+
+#create diagnostic plots
+par(mfrow=c(3,2))
+plot(lm.fit.auto.int)
+plot(predict (lm.fit.auto.int), residuals (lm.fit.auto.int))
+plot(predict (lm.fit.auto.int), rstudent (lm.fit.auto.int))
+
+# weight and displacement interactions are significant.
+#residuals are much more evenly distributed. No obvious curvature in the residuals
+par(mfrow=c(1,1))
+plot(mpg, predict(lm.fit.auto.int))
 
 
-
+#(f) Try a few different transformations of the variables, such as log(X), √
+#X, X2. Comment on your findings.
 
 
 
