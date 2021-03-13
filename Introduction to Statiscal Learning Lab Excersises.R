@@ -875,6 +875,110 @@ summary(lm.fit1)
 #
 
 
+#Chapter 15
+#Use the Boston data set.
+boston<-Boston
+str(boston)
+summary(boston)
+
+colnames(boston)
+#(a) For each predictor, fit a simple linear regression model to predict the response. 
+#Describe your results. In which of the models is
+#there a statistically significant association between the predictor
+#and the response? Create some plots to back up your assertions.
+
+lm.zn<-lm(crim~zn) #yes
+summary(lm.zn)
+
+lm.indus<-lm(crim~indus) #yes
+summary(lm.indus)
+
+lm.chas<-lm(crim~chas) #no
+summary(lm.chas)
+
+lm.nox<-lm(crim~nox)  #yes
+summary(lm.nox)
+
+lm.rm<-lm(crim~rm)    #yes
+summary(lm.rm)
+
+lm.age<-lm(crim~age)   #yes
+summary(lm.age)
+
+lm.dis<-lm(crim~dis)  #yes
+summary(lm.dis)
+
+lm.rad<-lm(crim~rad)  #yes
+summary(lm.rad)
+
+lm.tax<-lm(crim~tax)  #yes
+summary(lm.tax)
+
+lm.ptratio<-lm(crim~ptratio) #yes
+summary(lm.ptratio)
+
+lm.black<-lm(crim~black)     #yes
+summary(lm.black)
+
+lm.lstat<-lm(crim~lstat)     #yes
+summary(lm.lstat)
+
+lm.medv<-lm(crim~medv)      #yes
+summary(lm.medv)
+
+
+#All are significant except "chas"
+
+#(b) Fit a multiple regression model to predict the response using
+#all of the predictors. Describe your results. For which predictors
+#can we reject the null hypothesis H0 : βj = 0?
+
+
+lm.fit.bos<- lm(crim~.,data=boston)
+#Only 5 of the variables are significant, compared to all but one being significant in the one-parameter models.
+
+
+
+#  (c) How do your results from (a) compare to your results from (b)?
+#Only 5 of the variables are significant, compared to all but one being significant in the one-parameter models.
+
+
+#  Create a plot displaying the univariate regression coefficients
+#from (a) on the x-axis, and the multiple regression coefficients
+#from (b) on the y-axis. That is, each predictor is displayed as a
+#single point in the plot. Its coefficient in a simple linear regression model is shown on the x-axis, and its coefficient estimate
+#in the multiple linear regression model is shown on the y-axis.
+#
+x = c(coefficients(lm.zn)[2],
+      coefficients(lm.indus)[2],
+      coefficients(lm.chas)[2],
+      coefficients(lm.nox)[2],
+      coefficients(lm.rm)[2],
+      coefficients(lm.age)[2],
+      coefficients(lm.dis)[2],
+      coefficients(lm.rad)[2],
+      coefficients(lm.tax)[2],
+      coefficients(lm.ptratio)[2],
+      coefficients(lm.black)[2],
+      coefficients(lm.lstat)[2],
+      coefficients(lm.medv)[2])
+y = coefficients(lm.fit.bos)[2:14]
+plot(x, y)
+
+#Coefficent for Nox is ~30 in the full model and -10 in the univariate model.  Otherwise coefficients are close but not strongly correlated.
+
+#Is there evidence of non-linear association between any of the
+#predictors and the response? To answer this question, for each
+#predictor X, fit a model of the form
+#Y = β0 + β1X + β2X2 + β3X3 + error
+
+
+lm.zn = lm(crim~poly(zn,3))
+summary(lm.zn) # poly1, 2
+
+
+
+
 
 
 
