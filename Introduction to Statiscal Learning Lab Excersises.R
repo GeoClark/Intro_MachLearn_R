@@ -974,10 +974,46 @@ plot(x, y)
 
 
 lm.zn = lm(crim~poly(zn,3))
-summary(lm.zn) # poly1, 2
+summary(lm.zn) # poly 1&  2
+
+lm.indus = lm(crim~poly(indus,3))
+summary(lm.indus) # poly 1,2,3
+
+lm.chas = lm(crim~poly(chas,3))
+summary(lm.chas) # none 
+
+lm.nox = lm(crim~poly(nox,3))
+summary(lm.nox) # poly 1,2,3
+
+lm.rm = lm(crim~poly(rm,3))
+summary(lm.rm) # poly 1,2
+
+lm.age = lm(crim~poly(age,3))
+summary(lm.age) # poly 1,2,3
+
+lm.dis = lm(crim~poly(dis,3))
+summary(lm.dis) # poly 1,2,3
 
 
+lm.rad = lm(crim~poly(rad,3))
+summary(lm.rad) # poly 1&2
 
+lm.tax = lm(crim~poly(tax,3))
+summary(lm.tax) # poly 1&2
+
+
+lm.ptratio = lm(crim~poly(ptratio,3))
+summary(lm.ptratio) # poly1,2,3 
+
+lm.black = lm(crim~poly(black,3))
+summary(lm.black) # poly 1
+
+
+lm.lstat = lm(crim~poly(lstat,3))
+summary(lm.lstat) # poly 1 2
+
+lm.medv = lm(crim~poly(medv,3))
+summary(lm.medv) # poly 1,2,3
 
 
 
